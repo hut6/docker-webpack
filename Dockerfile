@@ -1,6 +1,7 @@
 FROM node:9-alpine
 
-RUN npm install -g webpack webpack-dev-server typescript ts-loader
+RUN yarn global add webpack webpack-dev-server typescript ts-loader sass-loader node-sass extract-text-webpack-plugin css-loader style-loader
+ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
 
 WORKDIR /app
 
