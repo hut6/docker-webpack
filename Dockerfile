@@ -1,16 +1,17 @@
 FROM node:9-alpine
 
-RUN yarn global add webpack webpack-dev-server typescript ts-loader sass-loader node-sass extract-text-webpack-plugin css-loader style-loader
-ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
+# Needed to Ctrl-C when using --watch
+RUN apk add --no-cache tini curl
+ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
 
-# Needed to Ctrl-C when using --watch
-RUN apk add --no-cache tini
-ENTRYPOINT ["/sbin/tini", "--"]
+RUN yarn global add webpack@~4 webpack-cli
+RUN yarn global add typescript@~2.8 ts-loader sass-loader node-sass style-loader css-loader resolve-url-loader html-webpack-plugin extract-text-webpack-plugin@^4.0.0-beta.0 clean-webpack-plugin webpack-manifest-plugin
+RUN yarn global add webpack-dev-server
 
-# Test
-COPY test /test
-RUN cd /test && webpack
+# global binary apps won't run without this
+ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
 
-CMD ["webpack"]
+COPY test /app/test
+CMD ["webpack", "--mode", "production"]
