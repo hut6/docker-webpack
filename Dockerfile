@@ -13,5 +13,4 @@ RUN yarn global add webpack-dev-server
 # global binary apps won't run without this
 ENV NODE_PATH /usr/local/share/.config/yarn/global/node_modules
 
-COPY test /app/test
 CMD ["webpack", "--mode", "production"]

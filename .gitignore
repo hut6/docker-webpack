@@ -1,0 +1,5 @@
+# yarn test packages
+test/node_modules
+
+# generated test files
+test/public/dist

@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "docker run --rm -v $PWD:/app hut6/webpack",
+    "dev-server": "docker run --rm -v $PWD:/app -p 8080:8080 -e ASSET_PATH=\"http://$(docker-machine ip):8080/\" hut6/webpack webpack-dev-server --mode development",
+    "watch": "fswatch -e index.js -o ./src/ | xargs -n1 -I{} docker exec $(basename $PWD) touch /app/src/index.js & P1=$$ ; docker run --name=$(basename $PWD) --rm -v $PWD:/app hut6/webpack webpack --mode development --watch ; pkill -P $P1",
+    "yarn": "docker run -v $PWD:$PWD -w $PWD hut6/yarn"
+  }
+}
