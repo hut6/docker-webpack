@@ -1,8 +1,10 @@
+/* Plugins */
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+/* Config */
 const OUTPUT_PATH = path.resolve(__dirname, 'public/dist');
 const OUTPUT_PUBLIC_PATH = process.env.ASSET_PATH || '/';
 
