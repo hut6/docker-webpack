@@ -10,7 +10,11 @@ const OUTPUT_PATH = path.resolve(__dirname, 'public/build');
 const OUTPUT_PUBLIC_PATH = (process.env.ASSET_PATH || '/') + 'build/';
 
 module.exports = env => {
-    let isDevelopment = env && env.development;
+    let isDevServer = env && env.devServer;
+    let nodeModules = ["node_modules"];
+    if(process.env.NODE_PATH) {
+        nodeModules.push(process.env.NODE_PATH);
+    }
 
     return {
         entry: {'app': './assets/js/app.ts'},
@@ -40,34 +44,32 @@ module.exports = env => {
                 }
             ]
         },
-        devtool: isDevelopment ? "cheap-module-eval-source-map" : "source-map",
+        devtool: isDevServer ? "cheap-module-eval-source-map" : "source-map",
         devServer: {
             disableHostCheck: true,
             host: "0.0.0.0",
             watchOptions: {poll: 500},
             publicPath: OUTPUT_PUBLIC_PATH,
+            public: process.env.ASSET_PATH || '/',
             hot: true,
             headers: {'Access-Control-Allow-Origin': '*'}
         },
         plugins: [
             new ExtractTextPlugin({
                 filename: "[name].[hash].bundle.css",
-                disable: isDevelopment,
+                disable: isDevServer,
             }),
             new ManifestPlugin({writeToFileEmit: true}),
             new CleanWebpackPlugin([OUTPUT_PATH]),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            })
         ],
         /* This is required to get webpack to recognise yarn global modules */
         resolveLoader: {
-            modules: ["node_modules", process.env.NODE_PATH],
+            modules: nodeModules,
         },
         resolve: {
-            modules: ["node_modules", process.env.NODE_PATH],
+            modules: nodeModules,
             extensions: ['.tsx', '.ts', '.js'],
         },
         output: {
