@@ -41,6 +41,14 @@ module.exports = env => {
                         loader: 'ts-loader',
                         options: {configFile: 'tsconfig.json'}
                     },
+                },
+                {
+                    test: /\.(woff|woff2|ttf|eot|otf)$/,
+                    loader: 'file-loader',
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|ico|svg|webp)$/,
+                    loader: 'file-loader',
                 }
             ]
         },
