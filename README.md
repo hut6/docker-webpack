@@ -31,3 +31,17 @@ starting point for a new project.
  - `composer watch` to automatically update changed assets
  - `composer dev-server` to run webpack-dev-server and define a manifest.json usable by Symfony
  - `composer yarn` to install Node dependencies
+
+# Local
+
+If you really need to run webpack locally, you will need to match your local npm setup.
+
+Run this command to view the dependencies in the docker image. 
+
+    docker run --rm hut6/webpack sh -c 'cat $NODE_PATH/../package.json'
+    
+You will need to add those to your global `package.json` in `~/.config/yarn/global`,
+or the equivalent. 
+
+Please don't add them to the project `package.json`, that will
+just make it harder for future developers to rebuild assets.
