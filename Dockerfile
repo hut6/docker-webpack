@@ -7,7 +7,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 WORKDIR /app
 
 RUN yarn global add webpack@~4 webpack-cli
-RUN yarn global add typescript@~2.8 ts-loader sass-loader node-sass style-loader css-loader resolve-url-loader html-webpack-plugin extract-text-webpack-plugin@^4.0.0-beta.0 clean-webpack-plugin webpack-manifest-plugin
+RUN yarn global add typescript@~2.8 ts-loader sass-loader node-sass style-loader css-loader resolve-url-loader file-loader url-loader html-webpack-plugin extract-text-webpack-plugin@^4.0.0-beta.0 clean-webpack-plugin webpack-manifest-plugin
 RUN yarn global add webpack-dev-server
 
 # global binary apps won't run without this
