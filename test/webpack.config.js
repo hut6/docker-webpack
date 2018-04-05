@@ -4,19 +4,18 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ModulesPath = process.env.NODE_PATH ? ["node_modules", process.env.NODE_PATH] : ["node_modules"];
 
-module.exports = env => {
+module.exports = (env, config) => {
+    /* Config */
+    let mode = config.mode || 'production';
     let devServer = env && env.devServer ? env.devServer : false;
 
-    /* Config */
     let outputPath = path.resolve(__dirname, 'public/build');
     let outputPublicPath = (devServer ? 'http://'+ devServer + '/' : '/') + 'build/';
-    let nodeModules = ["node_modules"];
-    if(process.env.NODE_PATH) {
-        nodeModules.push(process.env.NODE_PATH);
-    }
 
     return {
+        mode: mode,
         entry: {'app': './assets/js/app.ts'},
         module: {
             rules: [
@@ -52,17 +51,18 @@ module.exports = env => {
                 }
             ]
         },
-        devtool: devServer ? "cheap-module-eval-source-map" : "source-map",
+        devtool: mode === 'development' ? "cheap-module-eval-source-map" : "source-map",
         devServer: {
             disableHostCheck: true,
             host: "0.0.0.0",
             watchOptions: {poll: 500},
             publicPath: outputPublicPath,
-            public: devServer,
+            public: devServer || '127.0.0.0:8080',
             hot: true,
             headers: {'Access-Control-Allow-Origin': '*'}
         },
         plugins: [
+            new webpack.DefinePlugin({"process.env.NODE_ENV": mode}),
             new ExtractTextPlugin({
                 filename: "[name].[hash:8].bundle.css",
                 disable: !!devServer,
@@ -74,10 +74,10 @@ module.exports = env => {
         ],
         /* This is required to get webpack to recognise yarn global modules */
         resolveLoader: {
-            modules: nodeModules,
+            modules: ModulesPath,
         },
         resolve: {
-            modules: nodeModules,
+            modules: ModulesPath,
             extensions: ['.tsx', '.ts', '.js'],
         },
         output: {
