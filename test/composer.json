@@ -1,8 +1,7 @@
 {
   "scripts": {
-    "test": "echo $DOCKER_HOST",
     "build": "docker run --rm -v $PWD:/app hut6/webpack:1.4",
-    "dev-server": "docker run --rm -v $PWD:/app -p 8080:8080 -e ASSET_PATH=\"http://${WEBPACK_HOST:-$(docker-machine ip)}:9090/\" hut6/webpack:1.4 webpack-dev-server --mode development --env.devServer",
+    "dev-server": "docker run --rm -v $PWD:/app -p 9090:8080 hut6/webpack:1.4 webpack-dev-server --env.devServer=${WEBPACK_HOST:-$(docker-machine ip)}:9090 --mode development",
     "yarn": "docker run -v $PWD:$PWD -w $PWD hut6/yarn"
   }
 }

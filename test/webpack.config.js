@@ -5,12 +5,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-/* Config */
-const OUTPUT_PATH = path.resolve(__dirname, 'public/build');
-const OUTPUT_PUBLIC_PATH = (process.env.ASSET_PATH || '/') + 'build/';
-
 module.exports = env => {
-    let isDevServer = env && env.devServer;
+    let devServer = env && env.devServer ? env.devServer : false;
+
+    /* Config */
+    let outputPath = path.resolve(__dirname, 'public/build');
+    let outputPublicPath = (devServer ? 'http://'+ devServer + '/' : '/') + 'build/';
     let nodeModules = ["node_modules"];
     if(process.env.NODE_PATH) {
         nodeModules.push(process.env.NODE_PATH);
@@ -44,23 +44,23 @@ module.exports = env => {
                 }
             ]
         },
-        devtool: isDevServer ? "cheap-module-eval-source-map" : "source-map",
+        devtool: devServer ? "cheap-module-eval-source-map" : "source-map",
         devServer: {
             disableHostCheck: true,
             host: "0.0.0.0",
             watchOptions: {poll: 500},
-            publicPath: OUTPUT_PUBLIC_PATH,
-            public: process.env.ASSET_PATH || '/',
+            publicPath: outputPublicPath,
+            public: devServer,
             hot: true,
             headers: {'Access-Control-Allow-Origin': '*'}
         },
         plugins: [
             new ExtractTextPlugin({
-                filename: "[name].[hash].bundle.css",
-                disable: isDevServer,
+                filename: "[name].[hash:8].bundle.css",
+                disable: !!devServer,
             }),
             new ManifestPlugin({writeToFileEmit: true}),
-            new CleanWebpackPlugin([OUTPUT_PATH]),
+            new CleanWebpackPlugin([outputPath]),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
         ],
@@ -73,9 +73,9 @@ module.exports = env => {
             extensions: ['.tsx', '.ts', '.js'],
         },
         output: {
-            filename: '[name].[hash].bundle.js',
-            path: OUTPUT_PATH,
-            publicPath: OUTPUT_PUBLIC_PATH,
+            filename: '[name].[hash:8].bundle.js',
+            path: outputPath,
+            publicPath: outputPublicPath,
         },
         watchOptions: {
             poll: 1000,
