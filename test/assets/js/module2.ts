@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as $ from "jquery";
 
 export class Happy {
     private prefix: string = "L";
@@ -10,9 +10,8 @@ export class Happy {
     add(message: string) {
         let element = document.createElement('div');
 
-        // Lodash, currently included via a script, is required for this line to work
-        element.innerHTML = _.join(['module2.ts', message], ': ');
+        element.innerHTML = ['module2.ts', message].join(': ');
 
-        document.body.appendChild(element);
+        $(document.body).append(element);
     }
 }

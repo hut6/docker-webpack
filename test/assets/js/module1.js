@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export default function (arg = "default") {
-    console.log(_.join(["module1", arg], ' '));
+    console.log(["module1", arg].join(' '));
 }

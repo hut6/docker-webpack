@@ -3,3 +3,4 @@ test/node_modules
 
 # generated test files
 test/public/build
+test/yarn-error.log
