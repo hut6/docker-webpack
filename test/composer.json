@@ -2,6 +2,6 @@
   "scripts": {
     "build": "docker run --rm -v $PWD:/app hut6/webpack:1.4",
     "dev-server": "docker run --rm -v $PWD:/app -p 9090:8080 hut6/webpack:1.4 webpack-dev-server -d --env.devServer=${WEBPACK_HOST:-$(docker-machine ip)}:9090",
-    "yarn": "docker run -v $PWD:$PWD -w $PWD hut6/yarn"
+    "npm": "docker run -v $PWD:$PWD -w $PWD node:9-alpine npm"
   }
 }
