@@ -1,10 +1,13 @@
+/* Config */
+const ModulesPath = ["node_modules", "/usr/local/lib/node_modules"];
+
 /* Plugins */
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const ModulesPath = process.env.NODE_PATH ? ["node_modules", process.env.NODE_PATH] : ["node_modules"];
+const Autoprefixer = require('autoprefixer');
 
 module.exports = (env, config) => {
     /* Config */
@@ -25,8 +28,8 @@ module.exports = (env, config) => {
                         {
                             use: [
                                 {loader: "css-loader", options: {sourceMap: true}},
+                                {loader: "postcss-loader", options: {sourceMap: true,plugins: [Autoprefixer]}},
                                 {loader: "sass-loader", options: {sourceMap: true}},
-                                {loader: "postcss-loader", options: {}},
                             ],
                             fallback: {
                                 loader: "style-loader",
