@@ -25,7 +25,8 @@ module.exports = (env, config) => {
                         {
                             use: [
                                 {loader: "css-loader", options: {sourceMap: true}},
-                                {loader: "sass-loader", options: {sourceMap: true}}
+                                {loader: "sass-loader", options: {sourceMap: true}},
+                                {loader: "postcss-loader", options: {}},
                             ],
                             fallback: {
                                 loader: "style-loader",
