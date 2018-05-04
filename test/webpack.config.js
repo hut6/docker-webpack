@@ -3,6 +3,7 @@ const ModulesPath = ["node_modules", "/usr/local/lib/node_modules"];
 
 /* Plugins */
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -13,9 +14,11 @@ module.exports = (env, config) => {
     /* Config */
     let mode = config.mode || 'production';
     let devServer = env && env.devServer ? env.devServer : false;
+    let https = env.https ? {key: fs.readFileSync("/etc/ssl/localhost.key"), cert: fs.readFileSync("/etc/ssl/localhost.crt")} : false;
 
     let outputPath = path.resolve(__dirname, 'public/build');
-    let outputPublicPath = (devServer ? 'http://'+ devServer + '/' : '/') + 'build/';
+    let scheme = env.https || config.https ? 'https' : 'http';
+    let outputPublicPath = (devServer ? `${scheme}://${devServer}/` : '/') + 'build/';
 
     return {
         mode: mode,
@@ -63,7 +66,8 @@ module.exports = (env, config) => {
             publicPath: outputPublicPath,
             public: devServer || '127.0.0.0:8080',
             hot: true,
-            headers: {'Access-Control-Allow-Origin': '*'}
+            headers: {'Access-Control-Allow-Origin': '*'},
+            https: https,
         },
         plugins: [
             new webpack.DefinePlugin({"process.env.NODE_ENV": mode}),
