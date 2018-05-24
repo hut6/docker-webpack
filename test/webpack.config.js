@@ -49,6 +49,15 @@ module.exports = (env, config) => {
                     },
                 },
                 {
+                    test: /\.js$/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
+                    },
+                },
+                {
                     test: /\.(woff|woff2|ttf|eot|otf)$/,
                     loader: 'file-loader',
                 },
@@ -79,6 +88,9 @@ module.exports = (env, config) => {
             new CleanWebpackPlugin([outputPath]),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
+            new webpack.ProvidePlugin({
+                jQuery: 'jquery',
+            }),
         ],
         /* This is required to get webpack to recognise yarn global modules */
         resolveLoader: {
