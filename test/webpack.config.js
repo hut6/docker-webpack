@@ -14,10 +14,10 @@ module.exports = (env, config) => {
     /* Config */
     let mode = config.mode || 'production';
     let devServer = env && env.devServer ? env.devServer : false;
-    let https = env.https ? {key: fs.readFileSync("/etc/ssl/localhost.key"), cert: fs.readFileSync("/etc/ssl/localhost.crt")} : false;
+    let https = env && env.https ? {key: fs.readFileSync("/etc/ssl/localhost.key"), cert: fs.readFileSync("/etc/ssl/localhost.crt")} : false;
 
     let outputPath = path.resolve(__dirname, 'public/build');
-    let scheme = env.https || config.https ? 'https' : 'http';
+    let scheme = env && env.https || config.https ? 'https' : 'http';
     let outputPublicPath = (devServer ? `${scheme}://${devServer}/` : '/') + 'build/';
 
     return {

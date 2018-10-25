@@ -45,3 +45,10 @@ or the equivalent.
 
 Please don't add them to the project `package.json`, that will
 just make it harder for future developers to rebuild assets.
+
+# Rebuild/Update
+
+Build again and tag the version that you want.
+
+    docker build . -t hut6/webpack:1.12
+    docker push hut6/webpack:1.12
