@@ -32,6 +32,13 @@ starting point for a new project.
  - `composer dev-server` to run webpack-dev-server and define a manifest.json usable by Symfony
  - `composer yarn` to install Node dependencies
 
+# Rebuild/Update
+
+Build again and tag the version that you want.
+
+    docker build . -t hut6/webpack:1.12
+    docker push hut6/webpack:1.12
+
 # Local
 
 If you really need to run webpack locally, you will need to match your local npm setup.
@@ -45,10 +52,3 @@ or the equivalent.
 
 Please don't add them to the project `package.json`, that will
 just make it harder for future developers to rebuild assets.
-
-# Rebuild/Update
-
-Build again and tag the version that you want.
-
-    docker build . -t hut6/webpack:1.12
-    docker push hut6/webpack:1.12

@@ -5,7 +5,8 @@ const ModulesPath = ["node_modules", "/usr/local/lib/node_modules"];
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Sass = require('sass');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const Autoprefixer = require('autoprefixer');
@@ -32,7 +33,7 @@ module.exports = (env, config) => {
                             use: [
                                 {loader: "css-loader", options: {sourceMap: true}},
                                 {loader: "postcss-loader", options: {sourceMap: true,plugins: [Autoprefixer]}},
-                                {loader: "sass-loader", options: {sourceMap: true}},
+                                {loader: "sass-loader", options: {sourceMap: true, implementation: Sass }},
                             ],
                             fallback: {
                                 loader: "style-loader",
@@ -85,7 +86,7 @@ module.exports = (env, config) => {
                 disable: !!devServer,
             }),
             new ManifestPlugin({writeToFileEmit: true}),
-            new CleanWebpackPlugin([outputPath]),
+            new CleanWebpackPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.ProvidePlugin({
